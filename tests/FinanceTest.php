@@ -1213,8 +1213,8 @@ class FinanceTest extends TestCase
         $financeSvc = app(FinanceService::class);
 
         $exp = Expense::factory()->make([
-            'airline_id'   => null,
-            'type'         => ExpenseType::DAILY,
+            'airline_id' => null,
+            'type'       => ExpenseType::DAILY,
         ]);
 
         $financeSvc->addExpense($exp->toArray(), $subfleet);
