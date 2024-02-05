@@ -172,14 +172,13 @@ class RouteServiceProvider extends ServiceProvider
             });
 
             Route::group([
-                'namespace'  => 'Auth',
-                'prefix'     => 'auth',
-                'as'         => 'auth.',
-                'middleware' => 'auth',
+                'namespace' => 'Auth',
+                'prefix'    => 'oauth',
+                'as'        => 'oauth.',
             ], function () {
-                Route::get('discord/redirect', 'OAuthController@redirectToDiscordProvider')->name('discord.redirect');
-                Route::get('discord/callback', 'OAuthController@handleDiscordProviderCallback')->name('discord.callback');
-                Route::get('discord/logout', 'OAuthController@logoutDiscordProvider')->name('discord.logout');
+                Route::get('{provider}/redirect', 'OAuthController@redirectToProvider')->name('redirect');
+                Route::get('{provider}/callback', 'OAuthController@handleProviderCallback')->name('callback');
+                Route::get('{provider}/logout', 'OAuthController@logoutProvider')->name('logout')->middleware('auth');
             });
 
             Route::get('/logout', 'Auth\LoginController@logout')->name('auth.logout');
@@ -487,6 +486,13 @@ class RouteServiceProvider extends ServiceProvider
                 ->name('users.request_email_verification')->middleware('ability:admin,users');
 
             Route::resource('users', 'UserController')->middleware('ability:admin,users');
+
+            Route::resource('invites', 'InviteController')->middleware('ability:admin,users')
+                ->except([
+                    'show',
+                    'edit',
+                    'update',
+                ]);
 
             Route::match([
                 'get',

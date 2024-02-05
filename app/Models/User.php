@@ -53,6 +53,7 @@ use Staudenmeir\EloquentHasManyDeep\HasRelationships;
  * @property string           last_pirep_id
  * @property Pirep            last_pirep
  * @property UserFieldValue[] fields
+ * @property UserOAuthToken[] oauth_tokens
  * @property Role[]           roles
  * @property Subfleet[]       subfleets
  * @property TypeRating[]     typeratings
@@ -122,7 +123,6 @@ class User extends Authenticatable implements LaratrustUser, MustVerifyEmail
         'api_key',
         'email',
         'name',
-        'discord_id',
         'discord_private_channel_id',
         'password',
         'last_ip',
@@ -340,6 +340,11 @@ class User extends Authenticatable implements LaratrustUser, MustVerifyEmail
     public function fields(): HasMany
     {
         return $this->hasMany(UserFieldValue::class, 'user_id');
+    }
+
+    public function oauth_tokens(): HasMany
+    {
+        return $this->hasMany(UserOAuthToken::class, 'user_id');
     }
 
     public function pireps(): HasMany
